@@ -1,0 +1,13 @@
+MCA Notes
+
+Data Structures:
+- Arrays, Linked Lists, Stacks, Queues
+- Trees, Graphs, Sorting Algorithms
+
+Programming:
+- C, Java, Python basics
+- Object-Oriented Programming concepts
+
+Databases:
+- SQL, NoSQL
+- Normalization, Transactions

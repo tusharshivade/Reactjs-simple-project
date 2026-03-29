@@ -16,3 +16,4 @@
 //fragemnits
 //jsx  it is comninaton of javascript and html
 //virtual dom and real dom diffference
+//props

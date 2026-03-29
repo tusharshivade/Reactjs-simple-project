@@ -1,0 +1,21 @@
+MCA Syllabus
+
+Semester 1:
+- Programming in C
+- Data Structures
+- Mathematics
+
+Semester 2:
+- Java Programming
+- Database Management
+- Web Technologies
+
+Semester 3:
+- Advanced Java
+- Software Engineering
+- Operating Systems
+
+Semester 4:
+- Python Programming
+- Machine Learning
+- Project Work

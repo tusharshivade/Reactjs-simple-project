@@ -1,0 +1,6 @@
+MCA Projects
+
+1. Vote System - A web-based voting application using React and Node.js
+2. Student Management System - Database-driven app for managing student records
+3. E-commerce Website - Full-stack application with payment integration
+4. Chat Application - Real-time messaging using WebSockets
