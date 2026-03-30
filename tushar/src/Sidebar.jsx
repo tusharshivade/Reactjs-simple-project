@@ -4,7 +4,7 @@ import { Menu, X } from 'lucide-react';
 const Sidebar = ({ selectedCategory, setSelectedCategory }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const categories = ['All', 'Development', 'DevOps', 'Cloud', 'UI/UX'];
+  const categories = ['All', 'Development', 'DevOps', 'Cloud', 'UI/UX', 'Data Science', 'Backend Engineer'];
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
