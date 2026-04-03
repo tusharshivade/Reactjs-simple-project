@@ -1,0 +1,241 @@
+import React, { useState } from 'react';
+import { 
+  Map, Milestone, BookOpen, CheckCircle, ChevronRight,
+  Globe, Layout, Code, Zap, Layers, CheckSquare,
+  Terminal, Cpu, Database, Server, Share2, Shield, MessageSquare,
+  Box, Code2, CloudRain, Activity, Cloud, Lock, FileText, Maximize,
+  PenTool, Users, Monitor, Eye, Calculator, BarChart, PieChart, Brain, Rocket
+} from 'lucide-react';
+
+const roadmapsData = {
+  "Development": [
+    { title: "Internet Fundamentals", desc: "Understand how the web works underneath.", points: ["HTTP/HTTPS & DNS", "Browsers & DOM", "Hosting Basics"], icon: Globe },
+    { title: "HTML, CSS & Layouts", desc: "Building the visual structure.", points: ["Semantic HTML5", "CSS Grid & Flexbox", "Responsive Design"], icon: Layout },
+    { title: "JavaScript Core", desc: "Adding interactivity to your sites.", points: ["Variables & Data Structures", "Functions & Scope", "DOM Manipulation"], icon: Code },
+    { title: "Modern JavaScript (ES6+)", desc: "Advanced JS concepts.", points: ["Promises & Async/Await", "ES6 Modules", "Fetch API"], icon: Zap },
+    { title: "Frontend Frameworks", desc: "Building complex UIs.", points: ["React.js Basics", "State Management", "Component Architecture"], icon: Layers },
+    { title: "Version Control", desc: "Managing codebase history.", points: ["Git commands", "Branching & Merging", "GitHub Workflows"], icon: Share2 },
+    { title: "Testing & Deployment", desc: "Ensuring quality and delivering apps.", points: ["Jest & RTL", "Vercel / Netlify"], icon: CheckSquare }
+  ],
+  "Backend Engineer": [
+    { title: "Internet & OS", desc: "Core computing concepts.", points: ["Process vs Thread", "Memory Management", "Linux Commands"], icon: Terminal },
+    { title: "Language Mastery", desc: "Choose your primary backend weapon.", points: ["Node.js / Python / Java", "Concurrency", "Package Managers"], icon: Cpu },
+    { title: "Relational Databases", desc: "Structured data storage.", points: ["PostgreSQL / MySQL", "SQL Queries", "ACID Properties"], icon: Database },
+    { title: "NoSQL Databases", desc: "Unstructured & fast caching.", points: ["MongoDB", "Redis Caching", "NoSQL vs SQL"], icon: Server },
+    { title: "APIs & Arch Patterns", desc: "Connecting the frontend.", points: ["RESTful APIs", "GraphQL", "Monolith vs Microservices"], icon: Share2 },
+    { title: "Security", desc: "Protecting your endpoints.", points: ["OAuth 2.0 & JWT", "Hashing (Bcrypt)", "CORS & CSRF"], icon: Shield },
+    { title: "Message Brokers", desc: "Asynchronous communication.", points: ["RabbitMQ / Kafka", "Pub/Sub Pattern", "Event-driven arch"], icon: MessageSquare }
+  ],
+  "DevOps": [
+    { title: "Programming Basics", desc: "Scripting and automation.", points: ["Python or Go", "Bash Scripting", "Working with JSON/YAML"], icon: Code2 },
+    { title: "Linux & OS Concepts", desc: "The foundation of infrastructure.", points: ["Linux administration", "Networking (TCP/IP)", "SSH & Security basics"], icon: Terminal },
+    { title: "Containers", desc: "Packaging applications.", points: ["Docker Architecture", "Writing Dockerfiles", "Docker Compose"], icon: Box },
+    { title: "Container Orchestration", desc: "Managing fleets of containers.", points: ["Kubernetes (K8s)", "Pods & Deployments", "Helm Charts"], icon: Layers },
+    { title: "CI/CD Pipelines", desc: "Continuous Integration & Delivery.", points: ["GitHub Actions / GitLab CI", "Jenkins", "Automated Build/Deploy"], icon: Share2 },
+    { title: "Infrastructure as Code", desc: "Provisioning via code.", points: ["Terraform", "Ansible", "Immutable Infrastructure"], icon: CloudRain },
+    { title: "Monitoring & Observability", desc: "Keeping systems healthy.", points: ["Prometheus & Grafana", "ELK Stack", "Alerting"], icon: Activity }
+  ],
+  "Cloud": [
+    { title: "Cloud Fundamentals", desc: "Understanding the cloud paradigm.", points: ["IaaS, PaaS, SaaS", "Public vs Private Cloud", "Cloud Economics"], icon: Cloud },
+    { title: "Core Services", desc: "The basic building blocks.", points: ["Compute (EC2/VMs)", "Storage (S3)", "Networking (VPC)"], icon: Server },
+    { title: "Security & IAM", desc: "Securing your cloud resources.", points: ["Identity Management", "Security Groups", "Encryption Concepts"], icon: Lock },
+    { title: "Databases in the Cloud", desc: "Managed data solutions.", points: ["RDS / Cloud SQL", "DynamoDB / Firestore", "Data Warehousing"], icon: Database },
+    { title: "Serverless Architecture", desc: "Running code without managing servers.", points: ["AWS Lambda", "API Gateway", "Event-driven workflows"], icon: Zap },
+    { title: "Infrastructure as Code", desc: "Automating cloud deployments.", points: ["CloudFormation / Terraform", "State Management", "Modular Templates"], icon: FileText },
+    { title: "High Availability & Scaling", desc: "Making systems resilient.", points: ["Load Balancing", "Auto Scaling", "Disaster Recovery"], icon: Maximize }
+  ],
+  "UI/UX": [
+    { title: "Design Fundamentals", desc: "The core principles of design.", points: ["Color Theory", "Typography", "Grid Systems"], icon: PenTool },
+    { title: "User Research", desc: "Understanding your users.", points: ["User Interviews", "Creating Personas", "Journey Mapping"], icon: Users },
+    { title: "Wireframing", desc: "Low-fidelity layouts.", points: ["Information Architecture", "Paper Sketches", "Balsamiq/Whimsical"], icon: Layout },
+    { title: "UI Prototyping", desc: "High-fidelity design.", points: ["Figma Mastery", "Component Variants", "Interactive Prototypes"], icon: Monitor },
+    { title: "Usability Testing", desc: "Validating your designs.", points: ["A/B Testing", "Heuristic Evaluation", "Analyzing Feedback"], icon: CheckCircle },
+    { title: "Design Systems", desc: "Ensuring consistency at scale.", points: ["Creating UI Kits", "Design Tokens", "Handover to Devs"], icon: Layers },
+    { title: "Accessibility (a11y)", desc: "Designing for everyone.", points: ["WCAG Guidelines", "Color Contrast", "Screen Readers"], icon: Eye }
+  ],
+  "Data Science": [
+    { title: "Math Fundamentals", desc: "The foundation of data.", points: ["Linear Algebra", "Calculus basics", "Probability & Stats"], icon: Calculator },
+    { title: "Programming for Data", desc: "Languages and tools.", points: ["Python Mastery", "Jupyter Notebooks", "SQL basics"], icon: Code },
+    { title: "Data Manipulation", desc: "Cleaning and exploring data.", points: ["Pandas & NumPy", "Data Cleaning Techniques", "Exploratory Data Analysis"], icon: BarChart },
+    { title: "Data Visualization", desc: "Telling stories with data.", points: ["Matplotlib & Seaborn", "Tableau/PowerBI", "Interactive Dashboards"], icon: PieChart },
+    { title: "Machine Learning Concepts", desc: "Predictive modeling.", points: ["Supervised Learning", "Unsupervised Learning", "Model Evaluation"], icon: Brain },
+    { title: "Deep Learning (Optional)", desc: "Advanced neural networks.", points: ["TensorFlow / PyTorch", "CNNs for Images", "NLP basics"], icon: Cpu },
+    { title: "Model Deployment", desc: "Putting models into production.", points: ["Flask/FastAPI APIs", "Dockerizing Models", "Monitoring Drift"], icon: Rocket }
+  ]
+};
+
+const Roadmap = () => {
+  const categories = Object.keys(roadmapsData);
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [progress, setProgress] = useState(new Set()); // Store indices of completed steps
+
+  const toggleProgress = (index) => {
+    const newProgress = new Set(progress);
+    if (newProgress.has(index)) {
+      newProgress.delete(index);
+    } else {
+      newProgress.add(index);
+    }
+    setProgress(newProgress);
+  };
+
+  // Reset progress when category changes (or you could structure progress to be specific to categories)
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    setProgress(new Set());
+  };
+
+  return (
+    <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-16 relative">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4 relative z-10 tracking-tight">
+            <span className="p-3 bg-indigo-100 dark:bg-indigo-900/40 rounded-2xl">
+              <Map className="w-10 h-10 md:w-14 md:h-14 text-indigo-600 dark:text-indigo-400" />
+            </span>
+            Learning Roadmaps
+          </h1>
+          <p className="mt-6 text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
+            Follow our highly detailed, step-by-step master guides to level up your career. Click individual steps to mark them as completed as you journey along!
+          </p>
+        </div>
+
+        {/* Category Tabs */}
+        <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-20 relative z-10">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => handleCategoryChange(category)}
+              className={`px-6 py-3.5 rounded-2xl font-bold text-sm md:text-base transition-all duration-300 transform ${
+                selectedCategory === category
+                  ? 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-xl shadow-indigo-500/30 scale-105 border border-indigo-500/50'
+                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 shadow-md border border-slate-200 dark:border-slate-700 hover:-translate-y-1'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        {/* Roadmap Timeline Area */}
+        <div className="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl p-6 sm:p-10 lg:p-16 transition-colors duration-300 border border-slate-100 dark:border-slate-700 relative overflow-hidden">
+          {/* Decorative background gradients */}
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3 pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-3xl -translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
+
+          <div className="relative z-10">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-800 dark:text-white mb-16 text-center flex flex-col justify-center items-center gap-3">
+              <span className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+                {selectedCategory}
+              </span>
+              <span className="text-xl md:text-2xl font-medium text-slate-500 dark:text-slate-400">Mastery Path</span>
+            </h2>
+
+            <div className="relative max-w-5xl mx-auto">
+              {/* Dynamic Center Vertical Line (Progressed vs Unprogressed) */}
+              <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-1.5 h-full bg-slate-100 dark:bg-slate-700 rounded-full shadow-inner z-0"></div>
+
+              <div className="space-y-16 lg:space-y-24">
+                {roadmapsData[selectedCategory].map((step, index) => {
+                  const Icon = step.icon;
+                  const isCompleted = progress.has(index);
+
+                  return (
+                    <div key={index} className={`relative flex flex-col lg:flex-row items-center ${index % 2 === 0 ? 'lg:flex-row-reverse' : ''} group`}>
+                      
+                      {/* Timeline Dot Central Icon */}
+                      <div className={`hidden lg:flex absolute left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full items-center justify-center shadow-2xl z-20 transition-all duration-500 cursor-pointer 
+                        ${isCompleted 
+                          ? 'bg-gradient-to-br from-green-400 to-emerald-600 border-4 border-emerald-100 dark:border-slate-800 scale-110 shadow-emerald-500/40' 
+                          : 'bg-white dark:bg-slate-800 border-4 border-indigo-100 dark:border-slate-600 hover:border-indigo-300 dark:hover:border-indigo-500'}`}
+                        onClick={() => toggleProgress(index)}
+                      >
+                         {isCompleted ? (
+                            <CheckCircle className="w-7 h-7 text-white" />
+                         ) : (
+                            <span className="text-slate-400 dark:text-slate-500 font-extrabold text-xl">{index + 1}</span>
+                         )}
+                      </div>
+
+                      {/* Content Card Wrapper - controls layout geometry */}
+                      <div className={`w-full lg:w-1/2 flex justify-center z-10 ${index % 2 === 0 ? 'lg:pl-20' : 'lg:pr-20'}`}>
+                        {/* Interactive Card */}
+                        <div 
+                          className={`w-full bg-white dark:bg-slate-800/80 p-8 rounded-[2rem] border-2 transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden backdrop-blur-sm
+                          ${isCompleted 
+                            ? 'border-emerald-400/50 shadow-emerald-500/10 shadow-2xl' 
+                            : 'border-slate-100 dark:border-slate-700 shadow-xl hover:shadow-indigo-500/20 hover:border-indigo-200 dark:hover:border-indigo-500/50'}`}
+                        >
+                          {/* Inner soft gradient highlight */}
+                          <div className={`absolute top-0 left-0 w-full h-1.5 transition-colors duration-300 ${isCompleted ? 'bg-emerald-400' : 'bg-gradient-to-r from-indigo-500 to-purple-500'}`}></div>
+
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-5 relative z-10">
+                            {/* Inner Card Icon */}
+                            <div className={`p-4 rounded-2xl shadow-inner transition-colors duration-300 flex-shrink-0
+                              ${isCompleted 
+                                ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400' 
+                                : 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white'}`}>
+                              <Icon className="w-8 h-8" />
+                            </div>
+                            
+                            <div>
+                               <div className="flex items-center gap-3">
+                                 <h3 className="text-2xl font-bold text-slate-800 dark:text-white tracking-tight">
+                                   <span className="lg:hidden text-indigo-500 opacity-70 mr-2 text-xl font-medium">#{index + 1}</span>
+                                   {step.title}
+                                 </h3>
+                               </div>
+                               <p className="text-slate-500 dark:text-slate-400 font-medium mt-1">
+                                 {step.desc}
+                               </p>
+                            </div>
+                          </div>
+                          
+                          {/* Micro-tags for step points */}
+                          <div className="mt-6 flex flex-wrap gap-2 relative z-10">
+                            {step.points.map((point, ptIdx) => (
+                              <span key={ptIdx} className={`px-3 py-1.5 text-sm font-semibold rounded-lg flex items-center gap-1.5 transition-colors duration-300
+                                ${isCompleted 
+                                  ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300' 
+                                  : 'bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-900/20 group-hover:text-indigo-700 dark:group-hover:text-indigo-300'}`}>
+                                <div className={`w-1.5 h-1.5 rounded-full ${isCompleted ? 'bg-emerald-400' : 'bg-indigo-400'}`}></div>
+                                {point}
+                              </span>
+                            ))}
+                          </div>
+                          
+                          <div className="mt-8 pt-5 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between z-10 relative">
+                            <button 
+                              onClick={() => toggleProgress(index)}
+                              className={`flex items-center gap-2 text-sm font-bold transition-colors ${
+                                isCompleted 
+                                  ? 'text-emerald-600 dark:text-emerald-400 hover:text-emerald-700' 
+                                  : 'text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400'
+                              }`}
+                            >
+                              <CheckCircle className={`w-5 h-5 ${isCompleted ? 'fill-emerald-100 dark:fill-emerald-900/30' : ''}`} /> 
+                              {isCompleted ? 'Completed' : 'Mark Complete'}
+                            </button>
+                            <span className="flex items-center text-sm font-bold text-indigo-600 dark:text-indigo-400 hover:translate-x-1 transition-transform cursor-pointer">
+                              Resources <ChevronRight className="w-5 h-5 ml-1" />
+                            </span>
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  );
+};
+
+export default Roadmap;
