@@ -26,7 +26,7 @@ const Github = ({ className }) => (
 const SocialButton = ({ href, icon: Icon }) => (
   <a 
     href={href} 
-    className="p-2 text-emerald-100/80 hover:text-white hover:bg-white/20 hover:shadow-lg rounded-lg transition-all duration-300 transform hover:-translate-y-1"
+    className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-slate-800 hover:shadow-lg rounded-lg transition-all duration-300 transform hover:-translate-y-1"
   >
     <Icon className="w-[1.125rem] h-[1.125rem]" />
   </a>
@@ -34,43 +34,43 @@ const SocialButton = ({ href, icon: Icon }) => (
 
 const Footer = ({ hasSidebar = false }) => {
   return (
-    <footer className={`${hasSidebar ? 'md:ml-64' : ''} bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 mt-auto relative overflow-hidden shadow-inner`}>
+    <footer className={`${hasSidebar ? 'md:ml-64' : ''} bg-[#EAEFEF] dark:bg-slate-900 mt-auto relative overflow-hidden shadow-inner`}>
       
       {/* Visual Accent Overlay */}
-      <div className="absolute inset-0 bg-white/5 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gray-900/5 dark:bg-white/5 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-gray-900/10 dark:from-white/10 via-transparent to-transparent pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Main Footer Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between py-6 gap-6 text-emerald-50">
+        <div className="flex flex-col md:flex-row items-center justify-between py-6 gap-6 text-gray-900 dark:text-gray-100">
           
           {/* Brand */}
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-white/20 backdrop-blur-md rounded-xl shadow-inner border border-white/20 shadow-emerald-900/50">
-              <GraduationCap className="text-white w-6 h-6" />
+            <div className="p-2 bg-gray-200 dark:bg-slate-800 backdrop-blur-md rounded-xl shadow-inner border border-gray-300 dark:border-slate-700">
+              <GraduationCap className="text-indigo-600 dark:text-indigo-400 w-6 h-6" />
             </div>
-            <span className="text-xl font-extrabold text-white tracking-tight drop-shadow-md">
+            <span className="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight drop-shadow-sm">
               Student Resource
             </span>
           </div>
           
           {/* Inline Navigation Links */}
-          <div className="flex items-center gap-6 text-[0.95rem] font-semibold text-emerald-100/90 drop-shadow-sm">
-            <Link to="/" className="hover:text-white transition-colors relative group">
+          <div className="flex items-center gap-6 text-[0.95rem] font-semibold text-gray-700 dark:text-gray-300 drop-shadow-sm">
+            <Link to="/" className="hover:text-gray-900 dark:hover:text-white transition-colors relative group">
               Home
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gray-600 dark:bg-indigo-400 transition-all group-hover:w-full"></span>
             </Link>
-            <Link to="/roadmap" className="hover:text-white transition-colors relative group">
+            <Link to="/roadmap" className="hover:text-gray-900 dark:hover:text-white transition-colors relative group">
               Roadmap
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gray-600 dark:bg-indigo-400 transition-all group-hover:w-full"></span>
             </Link>
-            <Link to="/about" className="hover:text-white transition-colors relative group">
+            <Link to="/about" className="hover:text-gray-900 dark:hover:text-white transition-colors relative group">
               About
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gray-600 dark:bg-indigo-400 transition-all group-hover:w-full"></span>
             </Link>
-            <Link to="/contact" className="hover:text-white transition-colors relative group">
+            <Link to="/contact" className="hover:text-gray-900 dark:hover:text-white transition-colors relative group">
               Contact
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gray-600 dark:bg-indigo-400 transition-all group-hover:w-full"></span>
             </Link>
           </div>
 
@@ -78,12 +78,12 @@ const Footer = ({ hasSidebar = false }) => {
           <div className="flex items-center gap-1">
             <a 
               href="mailto:tusharshivade122@gmail.com" 
-              className="p-2 text-emerald-100/80 hover:text-white hover:bg-white/20 hover:shadow-lg rounded-lg transition-all duration-300 transform hover:-translate-y-1 mr-1 flex items-center gap-2 tooltip"
+              className="p-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-slate-800 hover:shadow-lg rounded-lg transition-all duration-300 transform hover:-translate-y-1 mr-1 flex items-center gap-2 tooltip"
             >
               <Mail className="w-[1.125rem] h-[1.125rem]" />
             </a>
             
-            <div className="w-px h-6 bg-emerald-400/30 mx-1"></div>
+            <div className="w-px h-6 bg-gray-300 dark:bg-slate-700 mx-1"></div>
             
             <SocialButton href="#" icon={Twitter} />
             <SocialButton href="#" icon={Linkedin} />
@@ -93,10 +93,10 @@ const Footer = ({ hasSidebar = false }) => {
         </div>
         
         {/* Bottom Small Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between py-4 border-t border-emerald-400/20 text-[0.8rem] text-emerald-200/80">
+        <div className="flex flex-col md:flex-row items-center justify-between py-4 border-t border-gray-300 dark:border-slate-800 text-[0.8rem] text-gray-600 dark:text-gray-400">
            <p className="font-medium drop-shadow-sm">&copy; {new Date().getFullYear()} Student Resource Hub. All rights reserved.</p>
            <p className="flex items-center gap-1.5 mt-2 md:mt-0 font-medium">
-             Built with <Heart className="w-3.5 h-3.5 text-rose-300 fill-rose-300/50 animate-pulse drop-shadow-md" /> for students everywhere
+             Built with <Heart className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 fill-indigo-500/50 dark:fill-indigo-400/50 animate-pulse drop-shadow-sm" /> for students everywhere
            </p>
         </div>
         

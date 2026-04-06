@@ -17,7 +17,7 @@ const resources = [
     description: 'Explore various industry-recognized certifications to boost your career and validate your skills.',
     tags: ['Learning', 'Career'],
     link: 'https://www.coursera.org/courses?query=free&skills=Artificial%20Intelligence',
-    categories: ['DevOps', 'Development', 'Cloud', 'UI/UX', 'Data Science', 'Backend Engineer']
+    categories: ['DevOps', 'Development', 'Cloud', 'UI/UX', 'Data Science', 'Backend Engineer', 'Cybersecurity & IT Security', 'Game Development']
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ const resources = [
     description: 'Educational games and interactive puzzles to improve your logic and programming skills.',
     tags: ['Interactive', 'Fun'],
     link: '#',
-    categories: ['DevOps', 'Development', 'Cloud', 'UI/UX', 'Data Science', 'Backend Engineer']
+    categories: ['DevOps', 'Development', 'Cloud', 'UI/UX', 'Data Science', 'Backend Engineer', 'Game Development']
   },
   {
     id: 3,
@@ -33,7 +33,7 @@ const resources = [
     description: 'A curated list of Artificial Intelligence tools to improve productivity and automate tasks.',
     tags: ['AI', 'Productivity'],
     link: '#',
-    categories: ['DevOps', 'Development', 'Cloud', 'UI/UX', 'Data Science', 'Backend Engineer']
+    categories: ['DevOps', 'Development', 'Cloud', 'UI/UX', 'Data Science', 'Backend Engineer', 'Cybersecurity & IT Security', 'Game Development']
   },
   {
     id: 4,
@@ -41,7 +41,7 @@ const resources = [
     description: 'Comprehensive notes and cheatsheets covering various technologies and frameworks.',
     tags: ['Study', 'Resources'],
     link: '#',
-    categories: ['DevOps', 'Development', 'Cloud', 'UI/UX', 'Data Science', 'Backend Engineer']
+    categories: ['DevOps', 'Development', 'Cloud', 'UI/UX', 'Data Science', 'Backend Engineer', 'Cybersecurity & IT Security', 'Game Development']
   },
   {
     id: 5,
@@ -49,7 +49,7 @@ const resources = [
     description: 'Collection of coding problems, quizzes, and practical exercises for interviews.',
     tags: ['Practice', 'Interview'],
     link: '#',
-    categories: ['DevOps', 'Development', 'Cloud', 'UI/UX', 'Data Science', 'Backend Engineer']
+    categories: ['DevOps', 'Development', 'Cloud', 'UI/UX', 'Data Science', 'Backend Engineer', 'Cybersecurity & IT Security', 'Game Development']
   },
   {
     id: 6,
@@ -57,7 +57,23 @@ const resources = [
     description: 'Video tutorials and courses specifically tailored for comprehensive understanding.',
     tags: ['Video', 'Tutorial'],
     link: '#',
-    categories: ['DevOps', 'Development', 'Cloud', 'UI/UX', 'Data Science', 'Backend Engineer']
+    categories: ['DevOps', 'Development', 'Cloud', 'UI/UX', 'Data Science', 'Backend Engineer', 'Cybersecurity & IT Security', 'Game Development']
+  },
+  {
+    id: 7,
+    title: 'Cybersecurity Masterclass',
+    description: 'Learn ethical hacking, penetration testing, and network security from scratch.',
+    tags: ['Security', 'Hacking'],
+    link: '#',
+    categories: ['Cybersecurity & IT Security']
+  },
+  {
+    id: 8,
+    title: 'Game Development with Unity',
+    description: 'Build robust 2D and 3D worlds using C# and the powerful Unity engine.',
+    tags: ['Unity', 'C#', 'Gaming'],
+    link: '#',
+    categories: ['Game Development']
   }
 ];
 
@@ -97,7 +113,7 @@ const Dashboard = ({ searchTerm, setSearchTerm, selectedCategory, setSelectedCat
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState('Development');
   const [likes, setLikes] = useState({});
 
   useEffect(() => {

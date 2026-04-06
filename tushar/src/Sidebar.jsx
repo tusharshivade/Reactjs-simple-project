@@ -6,13 +6,14 @@ const Sidebar = ({ selectedCategory, setSelectedCategory }) => {
 
   // Added new categories based on user requirements
   const categories = [
-    'All',
     'Development',
     'DevOps',
     'Cloud',
     'UI/UX',
     'Data Science',
-    'Backend Engineer'
+    'Backend Engineer',
+    'Cybersecurity & IT Security',
+    'Game Development'
   ];
 
   const toggleSidebar = () => setIsOpen(!isOpen);
@@ -28,8 +29,8 @@ const Sidebar = ({ selectedCategory, setSelectedCategory }) => {
       </button>
 
       {/* Sidebar */}
-      <aside className={`bg-indigo-700 dark:bg-slate-900 text-white w-64 min-h-screen p-6 fixed left-0 top-16 z-10 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 overflow-y-auto pb-20 border-r border-transparent dark:border-slate-700`}>
-        <h3 className="text-xl font-bold mb-6 text-indigo-100 dark:text-gray-200">Categories</h3>
+      <aside className={`bg-[#EAEFEF] dark:bg-slate-900 text-gray-800 dark:text-white w-64 min-h-screen p-6 fixed left-0 top-16 z-10 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 overflow-y-auto pb-20 border-r border-transparent dark:border-slate-700`}>
+        <h3 className="text-xl font-bold mb-6 text-gray-900 dark:text-gray-200">Categories</h3>
         <ul className="space-y-2">
           {categories.map(category => (
             <li key={category}>
@@ -38,9 +39,9 @@ const Sidebar = ({ selectedCategory, setSelectedCategory }) => {
                   setSelectedCategory(category);
                   setIsOpen(false); // Close on mobile after selection
                 }}
-                className={`w-full text-left py-2 px-4 rounded-lg hover:bg-indigo-600 dark:hover:bg-slate-800 transition-colors duration-200 ${
+                className={`w-full text-left py-2 px-4 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-800 transition-colors duration-200 ${
                   selectedCategory === category 
-                  ? 'bg-indigo-600 dark:bg-slate-800 border-l-4 border-white dark:border-indigo-500' 
+                  ? 'bg-gray-200 dark:bg-slate-800 border-l-4 border-gray-600 dark:border-indigo-500' 
                   : 'border-l-4 border-transparent'
                 }`}
               >

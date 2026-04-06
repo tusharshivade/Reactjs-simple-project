@@ -61,6 +61,24 @@ const roadmapsData = {
     { title: "Machine Learning Concepts", desc: "Predictive modeling.", points: ["Supervised Learning", "Unsupervised Learning", "Model Evaluation"], icon: Brain },
     { title: "Deep Learning (Optional)", desc: "Advanced neural networks.", points: ["TensorFlow / PyTorch", "CNNs for Images", "NLP basics"], icon: Cpu },
     { title: "Model Deployment", desc: "Putting models into production.", points: ["Flask/FastAPI APIs", "Dockerizing Models", "Monitoring Drift"], icon: Rocket }
+  ],
+  "Cybersecurity & IT Security": [
+    { title: "IT & Networking Basics", desc: "Understand how data flows.", points: ["OSI & TCP/IP Models", "DNS & DHCP", "Network Topologies"], icon: Globe },
+    { title: "Linux & OS Security", desc: "Securing the operating system.", points: ["Bash & Permissions", "Active Directory", "System Hardening"], icon: Terminal },
+    { title: "Cryptography & IAM", desc: "Protecting data and access.", points: ["Symmetric vs Asymmetric", "Hashing (SHA/MD5)", "OAuth & MFA"], icon: Lock },
+    { title: "Vulnerability Management", desc: "Finding the weak spots.", points: ["Nmap & Wireshark", "Nessus / OpenVAS", "Patch Management"], icon: Eye },
+    { title: "Offensive Security (Red Team)", desc: "Thinking like an attacker.", points: ["Web Exploits (OWASP)", "Metasploit", "Social Engineering"], icon: Zap },
+    { title: "Defensive Security (Blue Team)", desc: "Building the digital fortress.", points: ["Firewalls & IDS/IPS", "Endpoint Protection (EDR)", "Malware Analysis"], icon: Shield },
+    { title: "Incident Response & SOC", desc: "Reacting to breaches.", points: ["SIEM (Splunk)", "Digital Forensics", "Disaster Recovery"], icon: Activity }
+  ],
+  "Game Development": [
+    { title: "Programming Foundations", desc: "The logic of games.", points: ["C++ or C# Mastery", "Object-Oriented Logic", "Memory Management"], icon: Code },
+    { title: "Game Math & Physics", desc: "Making games feel real.", points: ["Vectors & Matrices", "Collision Detection", "Kinematics"], icon: Calculator },
+    { title: "Game Engine Mastery", desc: "The development environment.", points: ["Unity or Unreal Engine", "Scene Management", "Component Systems"], icon: Layers },
+    { title: "2D/3D Assets & Animation", desc: "Breathing life into characters.", points: ["Sprites & Tilemaps", "Rigging & Blend Trees", "Particle Systems"], icon: Monitor },
+    { title: "Game AI & Scripting", desc: "Making worlds interactive.", points: ["State Machines", "NavMesh & Pathfinding", "Behavior Trees"], icon: Brain },
+    { title: "Multiplayer Network", desc: "Connecting players.", points: ["Client-Server Arch", "RPCs & Syncs", "Matchmaking"], icon: Share2 },
+    { title: "Performance & Publishing", desc: "Optimizing and launching.", points: ["Profiling Tools", "Mobile vs PC Export", "App Store Guidelines"], icon: Rocket }
   ]
 };
 
@@ -79,11 +97,24 @@ const Roadmap = () => {
     setProgress(newProgress);
   };
 
-  // Reset progress when category changes (or you could structure progress to be specific to categories)
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
     setProgress(new Set());
   };
+
+  // Helper function to map index to a difficulty level mapping from Basic to Advanced
+  const getDifficultyLevel = (index, totalLength) => {
+    const percentage = index / (totalLength - 1);
+    if (percentage <= 0.3) {
+      return { label: 'Basic', classes: 'text-emerald-700 bg-emerald-100 dark:text-emerald-300 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800' };
+    } else if (percentage <= 0.7) {
+      return { label: 'Intermediate', classes: 'text-amber-700 bg-amber-100 dark:text-amber-300 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800' };
+    } else {
+      return { label: 'Advanced', classes: 'text-rose-700 bg-rose-100 dark:text-rose-300 dark:bg-rose-900/30 border-rose-200 dark:border-rose-800' };
+    }
+  };
+
+  const currentRoadmap = roadmapsData[selectedCategory];
 
   return (
     <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
@@ -97,7 +128,7 @@ const Roadmap = () => {
             Learning Roadmaps
           </h1>
           <p className="mt-6 text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
-            Follow our highly detailed, step-by-step master guides to level up your career. Click individual steps to mark them as completed as you journey along!
+            Follow our highly detailed, step-by-step master guides to level up your career. Click individual steps to mark them as completed as you journey from Basic to Advanced!
           </p>
         </div>
 
@@ -129,7 +160,7 @@ const Roadmap = () => {
               <span className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
                 {selectedCategory}
               </span>
-              <span className="text-xl md:text-2xl font-medium text-slate-500 dark:text-slate-400">Mastery Path</span>
+              <span className="text-xl md:text-2xl font-medium text-slate-500 dark:text-slate-400">Basic to Advanced Mastery Path</span>
             </h2>
 
             <div className="relative max-w-5xl mx-auto">
@@ -137,9 +168,10 @@ const Roadmap = () => {
               <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-1.5 h-full bg-slate-100 dark:bg-slate-700 rounded-full shadow-inner z-0"></div>
 
               <div className="space-y-16 lg:space-y-24">
-                {roadmapsData[selectedCategory].map((step, index) => {
+                {currentRoadmap.map((step, index) => {
                   const Icon = step.icon;
                   const isCompleted = progress.has(index);
+                  const difficulty = getDifficultyLevel(index, currentRoadmap.length);
 
                   return (
                     <div key={index} className={`relative flex flex-col lg:flex-row items-center ${index % 2 === 0 ? 'lg:flex-row-reverse' : ''} group`}>
@@ -162,10 +194,10 @@ const Roadmap = () => {
                       <div className={`w-full lg:w-1/2 flex justify-center z-10 ${index % 2 === 0 ? 'lg:pl-20' : 'lg:pr-20'}`}>
                         {/* Interactive Card */}
                         <div 
-                          className={`w-full bg-white dark:bg-slate-800/80 p-8 rounded-[2rem] border-2 transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden backdrop-blur-sm
+                          className={`w-full bg-white dark:bg-slate-800/80 p-6 sm:p-8 rounded-[2rem] border-2 transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden backdrop-blur-sm shadow-xl
                           ${isCompleted 
-                            ? 'border-emerald-400/50 shadow-emerald-500/10 shadow-2xl' 
-                            : 'border-slate-100 dark:border-slate-700 shadow-xl hover:shadow-indigo-500/20 hover:border-indigo-200 dark:hover:border-indigo-500/50'}`}
+                            ? 'border-emerald-400/50 shadow-emerald-500/10' 
+                            : 'border-slate-100 dark:border-slate-700 hover:shadow-indigo-500/20 hover:border-indigo-200 dark:hover:border-indigo-500/50'}`}
                         >
                           {/* Inner soft gradient highlight */}
                           <div className={`absolute top-0 left-0 w-full h-1.5 transition-colors duration-300 ${isCompleted ? 'bg-emerald-400' : 'bg-gradient-to-r from-indigo-500 to-purple-500'}`}></div>
@@ -179,14 +211,18 @@ const Roadmap = () => {
                               <Icon className="w-8 h-8" />
                             </div>
                             
-                            <div>
-                               <div className="flex items-center gap-3">
-                                 <h3 className="text-2xl font-bold text-slate-800 dark:text-white tracking-tight">
-                                   <span className="lg:hidden text-indigo-500 opacity-70 mr-2 text-xl font-medium">#{index + 1}</span>
-                                   {step.title}
-                                 </h3>
+                            <div className="flex-1 w-full">
+                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1">
+                                 {/* Difficulty Level Badge */}
+                                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border uppercase tracking-wider ${difficulty.classes}`}>
+                                   {difficulty.label}
+                                 </span>
+                                 <span className="lg:hidden text-slate-400 text-sm font-bold">Step {index + 1}</span>
                                </div>
-                               <p className="text-slate-500 dark:text-slate-400 font-medium mt-1">
+                               <h3 className="text-2xl font-bold text-slate-800 dark:text-white tracking-tight leading-tight mt-1">
+                                 {step.title}
+                               </h3>
+                               <p className="text-slate-500 dark:text-slate-400 font-medium mt-2 text-sm sm:text-base">
                                  {step.desc}
                                </p>
                             </div>
