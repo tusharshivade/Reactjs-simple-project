@@ -140,7 +140,7 @@ const Roadmap = () => {
               onClick={() => handleCategoryChange(category)}
               className={`px-6 py-3.5 rounded-2xl font-bold text-sm md:text-base transition-all duration-300 transform ${
                 selectedCategory === category
-                  ? 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-xl shadow-indigo-500/30 scale-105 border border-indigo-500/50'
+                  ? 'bg-gradient-to-br from-red-500 to-rose-600 text-white shadow-xl shadow-red-500/30 scale-105 border border-red-500/50'
                   : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 shadow-md border border-slate-200 dark:border-slate-700 hover:-translate-y-1'
               }`}
             >

@@ -72,10 +72,10 @@ const AboutUs = () => {
           ))}
         </div>
 
-        <div className="bg-indigo-600 rounded-2xl p-8 sm:p-10 text-center text-white shadow-xl">
+        <div className="bg-[#8CC7C4] rounded-2xl p-8 sm:p-10 text-center text-slate-900 shadow-xl">
           <h3 className="text-2xl sm:text-3xl font-bold mb-4">Ready to accelerate your career?</h3>
-          <p className="mb-8 text-indigo-100 text-lg">Join hundreds of students already ahead of the curve.</p>
-          <button className="bg-white text-indigo-600 px-8 py-3 rounded-lg font-bold text-lg hover:bg-slate-50 transition-colors shadow-sm">
+          <p className="mb-8 text-slate-800 text-lg font-medium">Join hundreds of students already ahead of the curve.</p>
+          <button className="bg-slate-900 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-slate-800 transition-colors shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-[#8CC7C4]">
             Explore Resources Now
           </button>
         </div>

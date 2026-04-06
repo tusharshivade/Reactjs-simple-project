@@ -28,62 +28,62 @@ const ContactUs = () => {
       <div className="max-w-6xl w-full bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col lg:flex-row transition-colors duration-300 border border-slate-100 dark:border-slate-700">
 
         {/* Left Side - Contact Info */}
-        <div className="lg:w-2/5 bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 p-10 lg:p-12 text-white flex flex-col justify-between relative overflow-hidden">
+        <div className="lg:w-2/5 bg-[#8CC7C4] p-10 lg:p-12 text-slate-900 flex flex-col justify-between relative overflow-hidden">
           {/* Decorative Elements */}
-          <div className="absolute top-0 right-0 -mt-16 -mr-16 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 -mb-16 -ml-16 w-48 h-48 bg-white opacity-10 rounded-full blur-2xl pointer-events-none"></div>
+          <div className="absolute top-0 right-0 -mt-16 -mr-16 w-64 h-64 bg-white opacity-20 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 -mb-16 -ml-16 w-48 h-48 bg-white opacity-20 rounded-full blur-2xl pointer-events-none"></div>
 
           <div className="relative z-10">
             <h2 className="text-4xl font-extrabold mb-4 tracking-tight">Get in Touch</h2>
-            <p className="text-indigo-100 mb-10 text-lg">
+            <p className="text-slate-800 mb-10 text-lg font-medium">
               We'd love to hear from you. Our friendly team is always here to chat.
             </p>
 
             <div className="space-y-8">
               <div className="flex items-start space-x-4 group">
-                <div className="p-3 bg-white/10 rounded-xl group-hover:bg-white/20 transition-colors">
-                  <Mail className="w-6 h-6 text-indigo-100" />
+                <div className="p-3 bg-white/40 rounded-xl group-hover:bg-white/60 transition-colors shadow-sm">
+                  <Mail className="w-6 h-6 text-teal-900" />
                 </div>
                 <div>
-                  <h4 className="text-lg font-semibold">Chat to us</h4>
-                  <p className="text-indigo-200 text-sm mt-1">Our friendly team is here to help.</p>
-                  <p className="mt-2 font-medium text-white hover:text-indigo-200 cursor-pointer transition-colors">tusharshivade122@gmail.com</p>
+                  <h4 className="text-lg font-bold text-slate-800">Chat to us</h4>
+                  <p className="text-slate-700 text-sm mt-1 font-medium">Our friendly team is here to help.</p>
+                  <p className="mt-2 font-bold text-slate-900 hover:text-teal-900 cursor-pointer transition-colors">tusharshivade122@gmail.com</p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-4 group">
-                <div className="p-3 bg-white/10 rounded-xl group-hover:bg-white/20 transition-colors">
-                  <MapPin className="w-6 h-6 text-indigo-100" />
+                <div className="p-3 bg-white/40 rounded-xl group-hover:bg-white/60 transition-colors shadow-sm">
+                  <MapPin className="w-6 h-6 text-teal-900" />
                 </div>
                 <div>
-                  <h4 className="text-lg font-semibold">Office</h4>
-                  <p className="text-indigo-200 text-sm mt-1">Come say hello at our office HQ.</p>
-                  <p className="mt-2 font-medium text-white">100 Smith Street, Pune, MH</p>
+                  <h4 className="text-lg font-bold text-slate-800">Office</h4>
+                  <p className="text-slate-700 text-sm mt-1 font-medium">Come say hello at our office HQ.</p>
+                  <p className="mt-2 font-bold text-slate-900">100 Smith Street, Pune, MH</p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-4 group">
-                <div className="p-3 bg-white/10 rounded-xl group-hover:bg-white/20 transition-colors">
-                  <Phone className="w-6 h-6 text-indigo-100" />
+                <div className="p-3 bg-white/40 rounded-xl group-hover:bg-white/60 transition-colors shadow-sm">
+                  <Phone className="w-6 h-6 text-teal-900" />
                 </div>
                 <div>
-                  <h4 className="text-lg font-semibold">Phone</h4>
-                  <p className="text-indigo-200 text-sm mt-1">Mon-Fri from 8am to 5pm.</p>
-                  <p className="mt-2 font-medium text-white hover:text-indigo-200 cursor-pointer transition-colors">+91 8624998006</p>
+                  <h4 className="text-lg font-bold text-slate-800">Phone</h4>
+                  <p className="text-slate-700 text-sm mt-1 font-medium">Mon-Fri from 8am to 5pm.</p>
+                  <p className="mt-2 font-bold text-slate-900 hover:text-teal-900 cursor-pointer transition-colors">+91 8624998006</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="relative z-10 mt-16 flex space-x-4">
-            <a href="#" className="p-2.5 bg-white/10 rounded-lg hover:bg-white/20 hover:-translate-y-1 transform transition-all duration-300">
-              <Twitter className="w-5 h-5 text-white" />
+            <a href="#" className="p-2.5 bg-white/40 rounded-lg hover:bg-white/60 shadow-sm hover:-translate-y-1 transform transition-all duration-300">
+              <Twitter className="w-5 h-5 text-teal-900" />
             </a>
-            <a href="#" className="p-2.5 bg-white/10 rounded-lg hover:bg-white/20 hover:-translate-y-1 transform transition-all duration-300">
-              <Linkedin className="w-5 h-5 text-white" />
+            <a href="#" className="p-2.5 bg-white/40 rounded-lg hover:bg-white/60 shadow-sm hover:-translate-y-1 transform transition-all duration-300">
+              <Linkedin className="w-5 h-5 text-teal-900" />
             </a>
-            <a href="#" className="p-2.5 bg-white/10 rounded-lg hover:bg-white/20 hover:-translate-y-1 transform transition-all duration-300">
-              <Github className="w-5 h-5 text-white" />
+            <a href="#" className="p-2.5 bg-white/40 rounded-lg hover:bg-white/60 shadow-sm hover:-translate-y-1 transform transition-all duration-300">
+              <Github className="w-5 h-5 text-teal-900" />
             </a>
           </div>
         </div>
@@ -178,7 +178,7 @@ const ContactUs = () => {
 
             <button
               type="submit"
-              className="mt-6 w-full flex justify-center items-center py-4 px-4 border border-transparent rounded-xl shadow-lg text-base font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform transition-all active:scale-[0.98] hover:shadow-xl"
+              className="mt-6 w-full flex justify-center items-center py-4 px-4 border border-transparent rounded-xl shadow-lg text-base font-bold text-slate-900 bg-[#8CC7C4] hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8CC7C4] transform transition-all active:scale-[0.98] hover:shadow-xl"
             >
               <Send className="w-5 h-5 mr-2" />
               Send Message
