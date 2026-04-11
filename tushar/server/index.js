@@ -19,6 +19,17 @@ const db = new sqlite3.Database(dbFile, (err) => {
   if (err) {
     console.error('Error opening database', err.message);
   } else {
+    // Create users table
+    db.run(`CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL,
+      accountType TEXT DEFAULT 'student',
+      joinDate DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
+    
+    // Create messages table
     db.run(`CREATE TABLE IF NOT EXISTS messages (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       role TEXT,
@@ -26,6 +37,8 @@ const db = new sqlite3.Database(dbFile, (err) => {
       imageUrl TEXT,
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
+    
+    console.log('Database tables ready');
   }
 });
 
@@ -99,6 +112,88 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
   // Construct the URL to access the uploaded image
   const imageUrl = `http://localhost:${PORT}/uploads/${req.file.filename}`;
   res.json({ imageUrl, filename: req.file.filename });
+});
+
+// ======================== AUTH ROUTES ========================
+
+// 5. Signup - Create new user
+app.post('/api/auth/signup', (req, res) => {
+  const { name, email, password, accountType } = req.body;
+  
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'Name, email and password are required' });
+  }
+  
+  // Check if user already exists
+  db.get('SELECT id FROM users WHERE email = ?', [email], (err, row) => {
+    if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    if (row) {
+      return res.status(400).json({ error: 'User with this email already exists' });
+    }
+    
+    // Insert new user
+    db.run(
+      'INSERT INTO users (name, email, password, accountType) VALUES (?, ?, ?, ?)',
+      [name, email, password, accountType || 'student'],
+      function(err) {
+        if (err) {
+          return res.status(400).json({ error: err.message });
+        }
+        res.json({
+          id: this.lastID,
+          name,
+          email,
+          accountType: accountType || 'student',
+          joinDate: new Date().toISOString()
+        });
+      }
+    );
+  });
+});
+
+// 6. Login - Authenticate user
+app.post('/api/auth/login', (req, res) => {
+  const { email, password } = req.body;
+  
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password are required' });
+  }
+  
+  db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
+    if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+    if (user.password !== password) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+    res.json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      accountType: user.accountType,
+      joinDate: user.joinDate
+    });
+  });
+});
+
+// 7. Get current user (for session persistence)
+app.get('/api/auth/me', (req, res) => {
+  const userId = req.headers['x-user-id'];
+  if (!userId) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+  
+  db.get('SELECT id, name, email, accountType, joinDate FROM users WHERE id = ?', [userId], (err, user) => {
+    if (err || !user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+    res.json(user);
+  });
 });
 
 // Start server

@@ -241,15 +241,15 @@ const AITutor = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-slate-50 dark:bg-slate-900 transition-colors duration-300 min-h-[calc(100vh-64px)] pt-16 px-4 pb-8 items-center">
+    <div className="flex-1 flex flex-col bg-slate-50 dark:bg-slate-900 transition-colors duration-300 min-h-screen pt-16 px-4 pb-8 items-center">
 
-      <div className="w-full max-w-5xl bg-white dark:bg-slate-800 rounded-xl shadow-2xl overflow-hidden flex flex-col h-[85vh] border border-slate-200 dark:border-slate-700 mt-4">
+      <div className="w-full max-w-3xl bg-white dark:bg-slate-800 rounded-xl shadow-2xl overflow-hidden flex flex-col h-[calc(100vh-80px)] border border-slate-200 dark:border-slate-700 mt-4">
 
         {/* Header */}
         <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded-sm bg-green-600 flex items-center justify-center shadow-md">
-              <Bot className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 rounded-sm bg-yellow-500 flex items-center justify-center shadow-md">
+              <Bot className="w-5 h-5 text-black" />
             </div>
             <div>
               <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">Project Idea Room</h2>
@@ -269,11 +269,11 @@ const AITutor = () => {
 
           {messages.map((msg, index) => (
             <div key={index} className={`w-full ${msg.role === 'user' ? 'bg-white dark:bg-slate-800' : 'bg-slate-50 dark:bg-slate-900/50'} py-6 border-b border-slate-100 dark:border-slate-700/50`}>
-              <div className="flex gap-4 max-w-4xl mx-auto px-6">
+              <div className="flex gap-4 max-w-2xl mx-auto px-6">
 
                 {/* Avatar */}
-                <div className={`w-8 h-8 mt-1 rounded-sm flex items-center justify-center flex-shrink-0 shadow-sm ${msg.role === 'user' ? 'bg-indigo-600' : 'bg-green-600'}`}>
-                  {msg.role === 'user' ? <User className="w-5 h-5 text-white" /> : <Bot className="w-5 h-5 text-white" />}
+                <div className={`w-8 h-8 mt-1 rounded-sm flex items-center justify-center flex-shrink-0 shadow-sm ${msg.role === 'user' ? 'bg-indigo-600' : 'bg-yellow-500'}`}>
+                  {msg.role === 'user' ? <User className="w-5 h-5 text-white" /> : <Bot className="w-5 h-5 text-black" />}
                 </div>
 
                 {/* Content */}
@@ -300,9 +300,9 @@ const AITutor = () => {
           {/* Typing Indicator */}
           {isLoading && messages.length > 0 && messages[messages.length - 1]?.content === '' && (
             <div className="w-full bg-slate-50 dark:bg-slate-900/50 py-6 border-b border-slate-100 dark:border-slate-700/50">
-              <div className="flex gap-4 max-w-4xl mx-auto px-6">
-                <div className="w-8 h-8 mt-1 rounded-sm flex items-center justify-center flex-shrink-0 shadow-sm bg-green-600">
-                  <Bot className="w-5 h-5 text-white" />
+              <div className="flex gap-4 max-w-2xl mx-auto px-6">
+                <div className="w-8 h-8 mt-1 rounded-sm flex items-center justify-center flex-shrink-0 shadow-sm bg-yellow-500">
+                  <Bot className="w-5 h-5 text-black" />
                 </div>
                 <div className="flex-1 min-w-0 flex items-center gap-2 pt-2">
                   <div className="w-2 h-2 rounded-full bg-slate-400 animate-bounce"></div>
@@ -320,7 +320,7 @@ const AITutor = () => {
         <div className="p-4 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700">
           
           {selectedFile && (
-            <div className="max-w-4xl mx-auto mb-3">
+            <div className="max-w-2xl mx-auto mb-3">
               <div className="relative inline-block bg-slate-100 dark:bg-slate-700 p-2 rounded-lg border border-slate-300 dark:border-slate-600">
                 <img src={URL.createObjectURL(selectedFile)} alt="preview" className="h-16 w-16 object-cover rounded shadow-sm" />
                 <button 
@@ -333,7 +333,7 @@ const AITutor = () => {
             </div>
           )}
 
-          <form onSubmit={handleSend} className="max-w-4xl mx-auto flex items-end relative">
+          <form onSubmit={handleSend} className="max-w-2xl mx-auto flex items-end relative">
             <div className="flex-1 flex items-end relative bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl shadow-sm overflow-hidden focus-within:ring-1 focus-within:ring-slate-400 focus-within:border-slate-400 transition-all">
               
               <button

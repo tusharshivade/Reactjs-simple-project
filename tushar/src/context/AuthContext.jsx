@@ -1,54 +1,75 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
+const API_URL = 'http://localhost:5000/api/auth';
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Load from local storage
+  // Load user from localStorage on mount and verify with backend
   useEffect(() => {
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-    const storedActiveUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-    
-    setUsers(storedUsers);
-    setCurrentUser(storedActiveUser);
+    const storedUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (storedUser && storedUser.id) {
+      // Verify with backend
+      fetch(`${API_URL}/me`, {
+        headers: { 'x-user-id': storedUser.id }
+      })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error('Session invalid');
+      })
+      .then(user => {
+        setCurrentUser(user);
+      })
+      .catch(() => {
+        localStorage.removeItem('currentUser');
+        setCurrentUser(null);
+      })
+      .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
   }, []);
 
-  const signup = (name, email, password, accountType = 'student') => {
-    return new Promise((resolve, reject) => {
-      // Basic check to see if email already exists
-      const userExists = users.some(u => u.email === email);
-      if (userExists) {
-        reject(new Error("User with this email already exists"));
-        return;
-      }
-      
-      const newUser = { id: Date.now(), name, email, password, accountType, joinDate: new Date().toISOString() };
-      const updatedUsers = [...users, newUser];
-      
-      setUsers(updatedUsers);
-      setCurrentUser(newUser); // Automatically log them in
-
-      localStorage.setItem('users', JSON.stringify(updatedUsers));
-      localStorage.setItem('currentUser', JSON.stringify(newUser));
-      resolve(newUser);
+  const signup = async (name, email, password, accountType = 'student') => {
+    const res = await fetch(`${API_URL}/signup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password, accountType })
     });
+    
+    const data = await res.json();
+    
+    if (!res.ok) {
+      throw new Error(data.error || 'Failed to create account');
+    }
+    
+    setCurrentUser(data);
+    localStorage.setItem('currentUser', JSON.stringify(data));
+    return data;
   };
 
-  const login = (email, password) => {
-    return new Promise((resolve, reject) => {
-      const user = users.find(u => u.email === email && u.password === password);
-      if (user) {
-        setCurrentUser(user);
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        resolve(user);
-      } else {
-        reject(new Error("Invalid email or password"));
-      }
+  const login = async (email, password) => {
+    const res = await fetch(`${API_URL}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
     });
+    
+    const data = await res.json();
+    
+    if (!res.ok) {
+      throw new Error(data.error || 'Invalid email or password');
+    }
+    
+    setCurrentUser(data);
+    localStorage.setItem('currentUser', JSON.stringify(data));
+    return data;
   };
 
   const logout = () => {
@@ -60,7 +81,8 @@ export const AuthProvider = ({ children }) => {
     currentUser,
     signup,
     login,
-    logout
+    logout,
+    loading
   };
 
   return (
