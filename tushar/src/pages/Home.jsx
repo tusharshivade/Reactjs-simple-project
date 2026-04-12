@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
-import { User, Mail, Calendar, Code } from 'lucide-react';
+import { User, Mail, Calendar, Code, MessageCircle } from 'lucide-react';
 import heroImage from '../assets/hero_student_tech.png';
 
 const Home = () => {
@@ -68,6 +68,15 @@ const Home = () => {
         </main>
         
         <Footer />
+        
+        {/* Floating AI Chat Button */}
+        <Link 
+          to="/chat"
+          className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-gradient-to-r from-[#21d2bd] to-[#9d7cf6] rounded-full shadow-2xl hover:scale-110 transition-transform animate-bounce"
+          title="Chat with AI Tutor"
+        >
+          <MessageCircle className="w-7 h-7 text-white" />
+        </Link>
       </div>
     </>
   );
