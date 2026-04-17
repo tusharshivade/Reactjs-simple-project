@@ -4,8 +4,10 @@ import {
   Globe, Layout, Code, Zap, Layers, CheckSquare,
   Terminal, Cpu, Database, Server, Share2, Shield, MessageSquare,
   Box, Code2, CloudRain, Activity, Cloud, Lock, FileText, Maximize,
-  PenTool, Users, Monitor, Eye, Calculator, BarChart, PieChart, Brain, Rocket, Download, Search
+  PenTool, Users, Monitor, Eye, Calculator, BarChart, PieChart, Brain, Rocket, Download, Search, Loader2
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { useEffect } from 'react';
 
 const roadmapsData = {
   "Development": [
@@ -83,24 +85,61 @@ const roadmapsData = {
 };
 
 const Roadmap = ({ searchTerm, setSearchTerm }) => {
+  const { currentUser } = useAuth();
   const categories = Object.keys(roadmapsData);
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-  const [progress, setProgress] = useState(new Set()); // Store indices of completed steps
+  const [progress, setProgress] = useState(new Set()); 
+  const [syncing, setSyncing] = useState(false);
 
-  const toggleProgress = (index) => {
-    const newProgress = new Set(progress);
-    if (newProgress.has(index)) {
-      newProgress.delete(index);
-    } else {
-      newProgress.add(index);
+  useEffect(() => {
+    if (currentUser) {
+      fetch(`http://localhost:5000/api/roadmaps/${currentUser.id}`)
+        .then(res => res.json())
+        .then(data => {
+          const userProgress = new Set(
+            data.progress
+              .filter(p => p.roadmapType === selectedCategory)
+              .map(p => p.stepIndex)
+          );
+          setProgress(userProgress);
+        })
+        .catch(err => console.error("Error fetching progress", err));
     }
-    setProgress(newProgress);
+  }, [currentUser, selectedCategory]);
+
+  const toggleProgress = async (index) => {
+    if (!currentUser) return;
+    
+    setSyncing(true);
+    try {
+      const res = await fetch('http://localhost:5000/api/roadmaps/toggle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: currentUser.id,
+          roadmapType: selectedCategory,
+          stepIndex: index
+        })
+      });
+      const data = await res.json();
+      
+      const newProgress = new Set(progress);
+      if (data.status === 'added') {
+        newProgress.add(index);
+      } else {
+        newProgress.delete(index);
+      }
+      setProgress(newProgress);
+    } catch (err) {
+      console.error("Error toggling progress", err);
+    } finally {
+      setSyncing(false);
+    }
   };
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    setProgress(new Set());
-    if (setSearchTerm) setSearchTerm(''); // Clear search when switching categories
+    if (setSearchTerm) setSearchTerm('');
   };
 
   // Helper function to map index to a difficulty level mapping from Basic to Advanced

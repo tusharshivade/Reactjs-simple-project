@@ -12,7 +12,13 @@ import AITutor from './pages/AITutor';
 import Footer from './Footer';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
-import { AuthProvider } from './context/AuthContext';
+import Jobs from './pages/Jobs';
+import Labs from './pages/Labs';
+import Interviews from './pages/Interviews';
+import OpenSource from './pages/OpenSource';
+import Dashboard from './pages/Dashboard';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { Navigate } from 'react-router-dom';
 
 const resources = [
   // ----------- DEVELOPMENT -----------
@@ -224,38 +230,20 @@ const resources = [
   }
 ];
 
-const Dashboard = ({ searchTerm, setSearchTerm, selectedCategory, setSelectedCategory, likes, toggleLike }) => {
-  const filteredResources = resources.filter(resource => {
-    const matchesSearch = resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          resource.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          resource.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesCategory = selectedCategory === 'All' || resource.categories?.includes(selectedCategory);
-    return matchesSearch && matchesCategory;
-  });
-
-  return (
-    <>
-      <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <div className="flex">
-        <Sidebar selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-        <div className="flex-1 flex flex-col md:ml-64 min-h-screen transition-colors duration-300 dark:bg-slate-900 bg-slate-50 w-full overflow-x-hidden">
-          <main className="flex-1 px-4 pb-4 sm:px-6 sm:pb-6 pt-24 sm:pt-28 dark:text-gray-100 w-full max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredResources.map(resource => (
-                <Card
-                  key={resource.id}
-                  resource={resource}
-                  isLiked={likes[resource.id] || false}
-                  onLike={() => toggleLike(resource.id)}
-                />
-              ))}
-            </div>
-          </main>
-          <Footer />
-        </div>
-      </div>
-    </>
+const ProtectedRoute = ({ children }) => {
+  const { currentUser, loading } = useAuth();
+  
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+    </div>
   );
+  
+  if (!currentUser) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  return children;
 };
 
 const App = () => {
@@ -282,23 +270,24 @@ const App = () => {
         <Route 
           path="/dashboard" 
           element={
-            <Dashboard 
-              searchTerm={searchTerm} 
-              setSearchTerm={setSearchTerm} 
-              selectedCategory={selectedCategory} 
-              setSelectedCategory={setSelectedCategory} 
-              likes={likes} 
-              toggleLike={toggleLike} 
-            />
+            <ProtectedRoute>
+              <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+              <Dashboard />
+              <Footer />
+            </ProtectedRoute>
           } 
         />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/profile" element={<><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><Profile /><Footer /></>} />
+        <Route path="/profile" element={<ProtectedRoute><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><Profile /><Footer /></ProtectedRoute>} />
         <Route path="/about" element={<><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><AboutUs /><Footer /></>} />
-        <Route path="/roadmap" element={<><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><Roadmap searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><Footer /></>} />
+        <Route path="/roadmap" element={<ProtectedRoute><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><Roadmap searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><Footer /></ProtectedRoute>} />
         <Route path="/contact" element={<><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><ContactUs /><Footer /></>} />
-        <Route path="/chat" element={<><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><AITutor /><Footer /></>} />
+        <Route path="/chat" element={<ProtectedRoute><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><AITutor /><Footer /></ProtectedRoute>} />
+        <Route path="/jobs" element={<ProtectedRoute><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><Jobs /><Footer /></ProtectedRoute>} />
+        <Route path="/labs" element={<ProtectedRoute><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><Labs /><Footer /></ProtectedRoute>} />
+        <Route path="/interviews" element={<ProtectedRoute><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><Interviews /><Footer /></ProtectedRoute>} />
+        <Route path="/opensource" element={<ProtectedRoute><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><OpenSource /><Footer /></ProtectedRoute>} />
       </Routes>
       </div>
     </AuthProvider>

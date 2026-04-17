@@ -77,6 +77,23 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
           Contact Us
           {isActive('/contact') && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-600 dark:bg-orange-400 rounded-full"></span>}
         </Link>
+        <div className="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-2"></div>
+        <Link to="/jobs" className={`relative py-1 text-slate-600 dark:text-slate-300 hover:text-orange-500 dark:hover:text-orange-400 font-medium transition-colors ${isActive('/jobs') ? 'text-orange-600 dark:text-orange-400' : ''}`}>
+          Jobs
+          {isActive('/jobs') && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-600 dark:bg-orange-400 rounded-full"></span>}
+        </Link>
+        <Link to="/labs" className={`relative py-1 text-slate-600 dark:text-slate-300 hover:text-orange-500 dark:hover:text-orange-400 font-medium transition-colors ${isActive('/labs') ? 'text-orange-600 dark:text-orange-400' : ''}`}>
+          Labs
+          {isActive('/labs') && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-600 dark:bg-orange-400 rounded-full"></span>}
+        </Link>
+        <Link to="/interviews" className={`relative py-1 text-slate-600 dark:text-slate-300 hover:text-orange-500 dark:hover:text-orange-400 font-medium transition-colors ${isActive('/interviews') ? 'text-orange-600 dark:text-orange-400' : ''}`}>
+          Interviews
+          {isActive('/interviews') && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-600 dark:bg-orange-400 rounded-full"></span>}
+        </Link>
+        <Link to="/opensource" className={`relative py-1 text-slate-600 dark:text-slate-300 hover:text-orange-500 dark:hover:text-orange-400 font-medium transition-colors ${isActive('/opensource') ? 'text-orange-600 dark:text-orange-400' : ''}`}>
+          Open Source
+          {isActive('/opensource') && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-600 dark:bg-orange-400 rounded-full"></span>}
+        </Link>
         <Link to="/chat" className={`px-4 py-1.5 rounded-full font-bold transition-all flex items-center gap-1 shadow-sm ${isActive('/chat') ? 'bg-orange-600 text-white shadow-orange-200' : 'bg-orange-100 dark:bg-orange-900/50 text-orange-600 dark:text-orange-400 hover:bg-orange-200 dark:hover:bg-orange-800'}`}>
           <span>AICHAT</span><span className="text-sm">✨</span>
         </Link>

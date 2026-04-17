@@ -26,7 +26,46 @@ const db = new sqlite3.Database(dbFile, (err) => {
       email TEXT UNIQUE NOT NULL,
       password TEXT NOT NULL,
       accountType TEXT DEFAULT 'student',
+      skills TEXT DEFAULT '[]',
+      points INTEGER DEFAULT 0,
+      streaks INTEGER DEFAULT 0,
+      badges TEXT DEFAULT '[]',
+      bio TEXT,
+      profilePic TEXT,
       joinDate DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
+    
+    // Create roadmap_progress table
+    db.run(`CREATE TABLE IF NOT EXISTS roadmap_progress (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      userId INTEGER,
+      roadmapType TEXT,
+      stepIndex INTEGER,
+      completedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(userId, roadmapType, stepIndex)
+    )`);
+
+    // Create interviews table
+    db.run(`CREATE TABLE IF NOT EXISTS interviews (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      requesterId INTEGER,
+      partnerId INTEGER,
+      domain TEXT,
+      status TEXT DEFAULT 'pending',
+      scheduledAt DATETIME,
+      feedback TEXT,
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
+
+    // Create contributions table
+    db.run(`CREATE TABLE IF NOT EXISTS contributions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      userId INTEGER,
+      repoName TEXT,
+      issueUrl TEXT,
+      status TEXT DEFAULT 'completed',
+      pointsAwarded INTEGER DEFAULT 50,
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
     
     // Create messages table
@@ -39,8 +78,23 @@ const db = new sqlite3.Database(dbFile, (err) => {
     )`);
     
     console.log('Database tables ready');
+
+    // Helper to add columns if they don't exist
+    const addColumn = (table, column, type) => {
+      db.run(`ALTER TABLE ${table} ADD COLUMN ${column} ${type}`, (err) => {
+        // Ignore error if column already exists
+      });
+    };
+
+    addColumn('users', 'skills', "TEXT DEFAULT '[]'");
+    addColumn('users', 'points', 'INTEGER DEFAULT 0');
+    addColumn('users', 'streaks', 'INTEGER DEFAULT 0');
+    addColumn('users', 'badges', "TEXT DEFAULT '[]'");
+    addColumn('users', 'bio', 'TEXT');
+    addColumn('users', 'profilePic', 'TEXT');
   }
 });
+
 
 // Configure Multer for image uploads
 const storage = multer.diskStorage({
@@ -181,18 +235,111 @@ app.post('/api/auth/login', (req, res) => {
   });
 });
 
-// 7. Get current user (for session persistence)
-app.get('/api/auth/me', (req, res) => {
+// 8. Update User Profile
+app.put('/api/auth/profile', (req, res) => {
   const userId = req.headers['x-user-id'];
-  if (!userId) {
-    return res.status(401).json({ error: 'Not authenticated' });
-  }
+  const { skills, bio, name } = req.body;
   
-  db.get('SELECT id, name, email, accountType, joinDate FROM users WHERE id = ?', [userId], (err, user) => {
-    if (err || !user) {
-      return res.status(401).json({ error: 'User not found' });
+  if (!userId) return res.status(401).json({ error: 'Not authenticated' });
+
+  db.run(
+    'UPDATE users SET skills = ?, bio = ?, name = ? WHERE id = ?',
+    [JSON.stringify(skills || []), bio, name, userId],
+    function(err) {
+      if (err) return res.status(400).json({ error: err.message });
+      res.json({ message: 'Profile updated successfully' });
     }
-    res.json(user);
+  );
+});
+
+// ======================== ROADMAP ROUTES ========================
+
+// 9. Get Roadmap Progress
+app.get('/api/roadmaps/:userId', (req, res) => {
+  const { userId } = req.params;
+  db.all('SELECT * FROM roadmap_progress WHERE userId = ?', [userId], (err, rows) => {
+    if (err) return res.status(400).json({ error: err.message });
+    res.json({ progress: rows });
+  });
+});
+
+// 10. Toggle Roadmap Step
+app.post('/api/roadmaps/toggle', (req, res) => {
+  const { userId, roadmapType, stepIndex } = req.body;
+  
+  db.get(
+    'SELECT id FROM roadmap_progress WHERE userId = ? AND roadmapType = ? AND stepIndex = ?',
+    [userId, roadmapType, stepIndex],
+    (err, row) => {
+      if (err) return res.status(400).json({ error: err.message });
+      
+      if (row) {
+        // Remove if exists
+        db.run('DELETE FROM roadmap_progress WHERE id = ?', [row.id], (err) => {
+          if (err) return res.status(400).json({ error: err.message });
+          res.json({ status: 'removed', points: -10 });
+        });
+      } else {
+        // Add if not exists
+        db.run(
+          'INSERT INTO roadmap_progress (userId, roadmapType, stepIndex) VALUES (?, ?, ?)',
+          [userId, roadmapType, stepIndex],
+          function(err) {
+            if (err) return res.status(400).json({ error: err.message });
+            // Award points
+            db.run('UPDATE users SET points = points + 10 WHERE id = ?', [userId]);
+            res.json({ status: 'added', points: 10 });
+          }
+        );
+      }
+    }
+  );
+});
+
+// ======================== INTERVIEW ROUTES ========================
+
+// 11. Get Interviews
+app.get('/api/interviews', (req, res) => {
+  db.all('SELECT i.*, u.name as requesterName FROM interviews i JOIN users u ON i.requesterId = u.id WHERE status = "pending"', (err, rows) => {
+    if (err) return res.status(400).json({ error: err.message });
+    res.json({ interviews: rows });
+  });
+});
+
+// 12. Book/Request Interview
+app.post('/api/interviews/request', (req, res) => {
+  const { userId, domain, scheduledAt } = req.body;
+  db.run(
+    'INSERT INTO interviews (requesterId, domain, scheduledAt) VALUES (?, ?, ?)',
+    [userId, domain, scheduledAt],
+    function(err) {
+      if (err) return res.status(400).json({ error: err.message });
+      res.json({ id: this.lastID, message: 'Interview requested' });
+    }
+  );
+});
+
+// ======================== CONTRIBUTION ROUTES ========================
+
+// 13. Log Contribution
+app.post('/api/contributions', (req, res) => {
+  const { userId, repoName, issueUrl } = req.body;
+  db.run(
+    'INSERT INTO contributions (userId, repoName, issueUrl) VALUES (?, ?, ?)',
+    [userId, repoName, issueUrl],
+    function(err) {
+      if (err) return res.status(400).json({ error: err.message });
+      // Award points
+      db.run('UPDATE users SET points = points + 50 WHERE id = ?', [userId]);
+      res.json({ id: this.lastID, message: 'Contribution logged (50 points awarded)' });
+    }
+  );
+});
+
+app.get('/api/contributions/:userId', (req, res) => {
+  db.all('SELECT * FROM contributions WHERE userId = ?', [req.params.userId], (err, rows) => {
+    if (err) return res.status(400).json({ error: err.message });
+    res.json({ contributions: rows });
   });
 });
 
