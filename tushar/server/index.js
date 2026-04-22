@@ -76,6 +76,20 @@ const db = new sqlite3.Database(dbFile, (err) => {
       imageUrl TEXT,
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
+
+    // Create aptitude_results table
+    db.run(`CREATE TABLE IF NOT EXISTS aptitude_results (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      userId INTEGER,
+      category TEXT,
+      logicScore INTEGER,
+      securityScore INTEGER,
+      efficiencyScore INTEGER,
+      syntaxScore INTEGER,
+      architectureScore INTEGER,
+      aiFeedback TEXT,
+      attemptDate DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
     
     console.log('Database tables ready');
 
@@ -340,6 +354,33 @@ app.get('/api/contributions/:userId', (req, res) => {
   db.all('SELECT * FROM contributions WHERE userId = ?', [req.params.userId], (err, rows) => {
     if (err) return res.status(400).json({ error: err.message });
     res.json({ contributions: rows });
+  });
+});
+
+// ======================== APTITUDE ROUTES ========================
+
+// 14. Log Aptitude Result
+app.post('/api/aptitude/results', (req, res) => {
+  const { userId, category, scores, aiFeedback } = req.body;
+  const { logic, security, efficiency, syntax, architecture } = scores;
+  
+  db.run(
+    'INSERT INTO aptitude_results (userId, category, logicScore, securityScore, efficiencyScore, syntaxScore, architectureScore, aiFeedback) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    [userId, category, logic, security, efficiency, syntax, architecture, aiFeedback],
+    function(err) {
+      if (err) return res.status(400).json({ error: err.message });
+      // Award points for completing an aptitude test
+      db.run('UPDATE users SET points = points + 100 WHERE id = ?', [userId]);
+      res.json({ id: this.lastID, message: 'Aptitude result logged (100 points awarded)' });
+    }
+  );
+});
+
+// 15. Get Aptitude Results
+app.get('/api/aptitude/results/:userId', (req, res) => {
+  db.all('SELECT * FROM aptitude_results WHERE userId = ? ORDER BY attemptDate DESC', [req.params.userId], (err, rows) => {
+    if (err) return res.status(400).json({ error: err.message });
+    res.json({ results: rows });
   });
 });
 

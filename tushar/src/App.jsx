@@ -17,6 +17,7 @@ import Labs from './pages/Labs';
 import Interviews from './pages/Interviews';
 import OpenSource from './pages/OpenSource';
 import Dashboard from './pages/Dashboard';
+import AptitudeArena from './pages/AptitudeArena';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Navigate } from 'react-router-dom';
 
@@ -288,6 +289,7 @@ const App = () => {
         <Route path="/labs" element={<ProtectedRoute><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><Labs /><Footer /></ProtectedRoute>} />
         <Route path="/interviews" element={<ProtectedRoute><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><Interviews /><Footer /></ProtectedRoute>} />
         <Route path="/opensource" element={<ProtectedRoute><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><OpenSource /><Footer /></ProtectedRoute>} />
+        <Route path="/aptitude" element={<ProtectedRoute><Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} /><AptitudeArena /><Footer /></ProtectedRoute>} />
       </Routes>
       </div>
     </AuthProvider>

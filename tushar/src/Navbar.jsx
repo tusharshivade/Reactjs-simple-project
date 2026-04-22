@@ -83,6 +83,10 @@ const Navbar = () => {
           Open Source
           {isActive('/opensource') && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-600 dark:bg-orange-400 rounded-full"></span>}
         </Link>
+        <Link to="/aptitude" className={`relative py-1 text-slate-600 dark:text-slate-300 hover:text-orange-500 dark:hover:text-orange-400 font-medium transition-colors ${isActive('/aptitude') ? 'text-orange-600 dark:text-orange-400' : ''}`}>
+          Aptitude
+          {isActive('/aptitude') && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-600 dark:bg-orange-400 rounded-full"></span>}
+        </Link>
         <Link to="/chat" className={`px-4 py-1.5 rounded-full font-bold transition-all flex items-center gap-1 shadow-sm ${isActive('/chat') ? 'bg-orange-600 text-white shadow-orange-200' : 'bg-orange-100 dark:bg-orange-900/50 text-orange-600 dark:text-orange-400 hover:bg-orange-200 dark:hover:bg-orange-800'}`}>
           <span>AICHAT</span><span className="text-sm">✨</span>
         </Link>
@@ -197,6 +201,7 @@ const Navbar = () => {
             <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className={`flex items-center gap-3 font-bold py-3 px-4 border-l-4 transition-all duration-300 ${isActive('/') ? 'text-orange-600 dark:text-orange-400 border-orange-600 bg-orange-50 dark:bg-orange-900/20 shadow-inner' : 'text-slate-600 dark:text-slate-300 border-transparent hover:bg-slate-50 dark:hover:bg-slate-700/50'}`}>Home</Link>
             <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className={`flex items-center gap-3 font-bold py-3 px-4 border-l-4 transition-all duration-300 ${isActive('/dashboard') ? 'text-orange-600 dark:text-orange-400 border-orange-600 bg-orange-50 dark:bg-orange-900/20 shadow-inner' : 'text-slate-600 dark:text-slate-300 border-transparent hover:bg-slate-50 dark:hover:bg-slate-700/50'}`}>Resources</Link>
             <Link to="/roadmap" onClick={() => setIsMobileMenuOpen(false)} className={`flex items-center gap-3 font-bold py-3 px-4 border-l-4 transition-all duration-300 ${isActive('/roadmap') ? 'text-orange-600 dark:text-orange-400 border-orange-600 bg-orange-50 dark:bg-orange-900/20 shadow-inner' : 'text-slate-600 dark:text-slate-300 border-transparent hover:bg-slate-50 dark:hover:bg-slate-700/50'}`}>Roadmap</Link>
+            <Link to="/aptitude" onClick={() => setIsMobileMenuOpen(false)} className={`flex items-center gap-3 font-bold py-3 px-4 border-l-4 transition-all duration-300 ${isActive('/aptitude') ? 'text-orange-600 dark:text-orange-400 border-orange-600 bg-orange-50 dark:bg-orange-900/20 shadow-inner' : 'text-slate-600 dark:text-slate-300 border-transparent hover:bg-slate-50 dark:hover:bg-slate-700/50'}`}>Aptitude</Link>
             <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className={`flex items-center gap-3 font-bold py-3 px-4 border-l-4 transition-all duration-300 ${isActive('/about') ? 'text-orange-600 dark:text-orange-400 border-orange-600 bg-orange-50 dark:bg-orange-900/20 shadow-inner' : 'text-slate-600 dark:text-slate-300 border-transparent hover:bg-slate-50 dark:hover:bg-slate-700/50'}`}>About Us</Link>
             
             {currentUser ? (
