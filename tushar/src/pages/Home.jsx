@@ -70,7 +70,7 @@ const Home = () => {
 
         <StatsSection />
         
-        <Footer />
+        <Footer variant="big" />
         
         {/* Floating AI Chat Button */}
         <Link 

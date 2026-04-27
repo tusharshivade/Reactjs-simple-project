@@ -1,65 +1,64 @@
-# Student Resource Hub
+# Student Resource Hub 🚀
 
-A comprehensive, beautifully designed React application serving as a centralized hub for students to explore tech certifications, tools, notes, and mastery roadmaps.
+A comprehensive, beautifully designed React application serving as a centralized hub for students to explore tech certifications, AI-powered learning tools, and career mastery roadmaps.
 
-## 🚀 Features
+## ✨ New Features
 
-- **Interactive Mastery Roadmaps:** Detailed, step-by-step interactive timelines for major tech domains (Development, DevOps, Cloud, UI/UX, Data Science, Backend Engineer) with progress tracking.
-- **Resource Dashboard:** A categorized dashboard to explore cards containing links to games, AI tools, practice sets, videos, and study notes.
-- **Persistent Dark Mode:** A seamless dark and light mode toggle that remembers your preference across sessions using `localStorage` to prevent annoying flashes.
-- **Modern UI/UX:** Built with a premium aesthetic featuring glassmorphism, micro-animations, translucent overlays, and stunning gradient styling (like our Emerald Academic Footer!).
-- **Responsive Layout:** A fully responsive Sidebar and Navbar ensuring a perfect experience on both mobile and desktop screens.
-- **Routing:** Multi-page application with dedicated Login, Signup, About Us, and Contact Us views.
+- **🤖 AI Technical Aptitude Engine:** Evaluate your technical skills through AI-driven scenarios. Get instant feedback and visualize your progress with interactive radar charts.
+- **💬 AI Coding Tutor:** A real-time assistant to help you debug code, understand complex concepts, and guide your learning journey.
+- **🗺️ Interactive Mastery Roadmaps:** Step-by-step timelines for major tech domains (Development, DevOps, Cloud, UI/UX, Data Science) with integrated progress tracking.
+- **🎨 Dynamic Footer System:** A comprehensive "Big Footer" on the Home page for full navigation, and a sleek, minimized footer on internal pages for a focused workspace.
+- **🌙 Persistent Dark Mode:** Premium aesthetic with glassmorphism and smooth transitions that remember your preference via `localStorage`.
 
 ## 🛠️ Tech Stack
 
-- **Framework:** [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
+- **Frontend:** [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
+- **Intelligence:** [Google Gemini 3 Flash](https://aistudio.google.com/) via `@google/generative-ai`
+- **Visualization:** [Recharts](https://recharts.org/) (for Aptitude Radar Charts)
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) + [Lucide React](https://lucide.dev/)
 - **Routing:** [React Router v7](https://reactrouter.com/)
-- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
-- **Icons:** [Lucide React](https://lucide.dev/)
 
 ## ⚙️ Getting Started
 
 ### Prerequisites
-
-Make sure you have Node.js and npm installed on your machine.
+- Node.js (v18+)
+- npm or yarn
 
 ### Installation
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/tusharshivade/Reactjs-simple-project.git
-   ```
-2. Navigate into the project directory (ensure you are in the Vite app directory if it is nested):
-   ```bash
    cd Reactjs-simple-project
    ```
-3. Install the required dependencies:
+
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-### Running the App Locally
+3. **Set up Environment Variables**:
+   Create a `.env` file in the root directory (based on `.env.example`):
+   ```bash
+   cp .env.example .env
+   ```
+   Add your Gemini API key to `.env`:
+   ```env
+   VITE_GEMINI_API_KEY=your_actual_key_here
+   ```
+   > [!IMPORTANT]
+   > Never share your `.env` file or push it to GitHub. Your key is protected by `.gitignore`.
 
-To start the Vite development server:
+### Running Locally
+
+To start the development server (Frontend + Backend):
 ```bash
 npm run dev
 ```
-Then, open your browser and navigate to `http://localhost:5173/` to view the application.
-
-### Building for Production
-
-To create an optimized production build for deployment:
-```bash
-npm run build
-```
-You can preview the production build locally using:
-```bash
-npm run preview
-```
+Open `http://localhost:5173/` in your browser.
 
 ## 🤝 Contributing
-Contributions, issues, and feature requests are always welcome! Feel free to check the issues page or submit a pull request if you want to improve the codebase.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📜 License
-This project is open-source and available under the standard MIT License.
+This project is open-source and available under the [MIT License](LICENSE).

@@ -64,7 +64,7 @@ const SocialButton = ({ href, icon: Icon, label }) => (
   </a>
 );
 
-const Footer = ({ hasSidebar = false }) => {
+const Footer = ({ hasSidebar = false, variant = 'small' }) => {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -76,109 +76,113 @@ const Footer = ({ hasSidebar = false }) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Top Section: Newsletter & Brand */}
-        <div className="py-12 border-b border-gray-200 dark:border-slate-900 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="max-w-md">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2.5 bg-orange-600 rounded-xl shadow-lg shadow-orange-600/20">
-                <GraduationCap className="text-white w-7 h-7" />
+        {variant === 'big' && (
+          <>
+            {/* Top Section: Newsletter & Brand */}
+            <div className="py-12 border-b border-gray-200 dark:border-slate-900 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="max-w-md">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2.5 bg-orange-600 rounded-xl shadow-lg shadow-orange-600/20">
+                    <GraduationCap className="text-white w-7 h-7" />
+                  </div>
+                  <span className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
+                    Student<span className="text-orange-600">Resource</span>
+                  </span>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+                  Empowering students with the best curated resources, career roadmaps, and AI-powered learning tools to excel in their professional journey.
+                </p>
+                <div className="flex items-center gap-4 text-sm font-semibold text-gray-500 dark:text-gray-400">
+                  <span className="flex items-center gap-1.5">
+                    <Users className="w-4 h-4 text-orange-500" />
+                    10k+ Students
+                  </span>
+                  <span className="w-1 h-1 bg-gray-300 dark:bg-slate-700 rounded-full"></span>
+                  <span className="flex items-center gap-1.5">
+                    <Globe className="w-4 h-4 text-orange-500" />
+                    Global Community
+                  </span>
+                </div>
               </div>
-              <span className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
-                Student<span className="text-orange-600">Resource</span>
-              </span>
-            </div>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
-              Empowering students with the best curated resources, career roadmaps, and AI-powered learning tools to excel in their professional journey.
-            </p>
-            <div className="flex items-center gap-4 text-sm font-semibold text-gray-500 dark:text-gray-400">
-              <span className="flex items-center gap-1.5">
-                <Users className="w-4 h-4 text-orange-500" />
-                10k+ Students
-              </span>
-              <span className="w-1 h-1 bg-gray-300 dark:bg-slate-700 rounded-full"></span>
-              <span className="flex items-center gap-1.5">
-                <Globe className="w-4 h-4 text-orange-500" />
-                Global Community
-              </span>
-            </div>
-          </div>
 
-          <div className="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Stay ahead of the curve</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">Weekly updates on new resources, job openings, and tech trends.</p>
-            <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
-              <div className="relative flex-1">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input 
-                  type="email" 
-                  placeholder="Enter your email" 
-                  className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all outline-none text-sm text-gray-900 dark:text-white"
-                />
-              </div>
-              <button className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-600/20 flex items-center gap-2 whitespace-nowrap">
-                Subscribe <Send className="w-4 h-4" />
-              </button>
-            </form>
-          </div>
-        </div>
-
-        {/* Middle Section: Links Grid */}
-        <div className="py-16 grid grid-cols-2 md:grid-cols-4 gap-12">
-          <FooterColumn 
-            title="Platform"
-            links={[
-              { label: 'Learning Roadmap', href: '/roadmap' },
-              { label: 'Virtual Labs', href: '/labs' },
-              { label: 'Job Board', href: '/jobs' },
-              { label: 'Mock Interviews', href: '/interviews' },
-            ]}
-          />
-          <FooterColumn 
-            title="Resources"
-            links={[
-              { label: 'Open Source', href: '/opensource' },
-              { label: 'AI Tutor', href: '/chat' },
-              { label: 'Aptitude Arena', href: '/aptitude' },
-              { label: 'Documentation', href: '#' },
-            ]}
-          />
-          <FooterColumn 
-            title="Support"
-            links={[
-              { label: 'Help Center', href: '#' },
-              { label: 'Contact Us', href: '/contact' },
-              { label: 'About Us', href: '/about' },
-              { label: 'Community', href: '#' },
-            ]}
-          />
-          <div className="flex flex-col gap-6">
-            <div>
-              <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white mb-4">
-                Connect With Us
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                <SocialButton href="#" icon={TwitterIcon} label="Twitter" />
-                <SocialButton href="#" icon={LinkedinIcon} label="LinkedIn" />
-                <SocialButton href="#" icon={GithubIcon} label="GitHub" />
-                <SocialButton href="mailto:contact@studentresource.com" icon={Mail} label="Email" />
+              <div className="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Stay ahead of the curve</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">Weekly updates on new resources, job openings, and tech trends.</p>
+                <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
+                  <div className="relative flex-1">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input 
+                      type="email" 
+                      placeholder="Enter your email" 
+                      className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all outline-none text-sm text-gray-900 dark:text-white"
+                    />
+                  </div>
+                  <button className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-600/20 flex items-center gap-2 whitespace-nowrap">
+                    Subscribe <Send className="w-4 h-4" />
+                  </button>
+                </form>
               </div>
             </div>
-            <div className="p-4 bg-orange-50 dark:bg-orange-950/20 rounded-xl border border-orange-100 dark:border-orange-900/30">
-              <div className="flex items-start gap-3">
-                <MessageSquare className="w-5 h-5 text-orange-600 mt-0.5" />
+
+            {/* Middle Section: Links Grid */}
+            <div className="py-16 grid grid-cols-2 md:grid-cols-4 gap-12">
+              <FooterColumn 
+                title="Platform"
+                links={[
+                  { label: 'Learning Roadmap', href: '/roadmap' },
+                  { label: 'Virtual Labs', href: '/labs' },
+                  { label: 'Job Board', href: '/jobs' },
+                  { label: 'Mock Interviews', href: '/interviews' },
+                ]}
+              />
+              <FooterColumn 
+                title="Resources"
+                links={[
+                  { label: 'Open Source', href: '/opensource' },
+                  { label: 'AI Tutor', href: '/chat' },
+                  { label: 'Aptitude Arena', href: '/aptitude' },
+                  { label: 'Documentation', href: '#' },
+                ]}
+              />
+              <FooterColumn 
+                title="Support"
+                links={[
+                  { label: 'Help Center', href: '#' },
+                  { label: 'Contact Us', href: '/contact' },
+                  { label: 'About Us', href: '/about' },
+                  { label: 'Community', href: '#' },
+                ]}
+              />
+              <div className="flex flex-col gap-6">
                 <div>
-                  <p className="text-xs font-bold text-orange-900 dark:text-orange-200 mb-1">Live Support</p>
-                  <p className="text-[0.75rem] text-orange-800/80 dark:text-orange-300/80 leading-snug">
-                    Need help? Our team is available Mon-Fri, 9am-6pm.
-                  </p>
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-white mb-4">
+                    Connect With Us
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    <SocialButton href="#" icon={TwitterIcon} label="Twitter" />
+                    <SocialButton href="#" icon={LinkedinIcon} label="LinkedIn" />
+                    <SocialButton href="#" icon={GithubIcon} label="GitHub" />
+                    <SocialButton href="mailto:contact@studentresource.com" icon={Mail} label="Email" />
+                  </div>
+                </div>
+                <div className="p-4 bg-orange-50 dark:bg-orange-950/20 rounded-xl border border-orange-100 dark:border-orange-900/30">
+                  <div className="flex items-start gap-3">
+                    <MessageSquare className="w-5 h-5 text-orange-600 mt-0.5" />
+                    <div>
+                      <p className="text-xs font-bold text-orange-900 dark:text-orange-200 mb-1">Live Support</p>
+                      <p className="text-[0.75rem] text-orange-800/80 dark:text-orange-300/80 leading-snug">
+                        Need help? Our team is available Mon-Fri, 9am-6pm.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
 
         {/* Bottom Section: Legal & Copyright */}
-        <div className="py-8 border-t border-gray-200 dark:border-slate-900 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className={`py-8 ${variant === 'big' ? 'border-t border-gray-200 dark:border-slate-900' : ''} flex flex-col md:flex-row items-center justify-between gap-6`}>
           <div className="flex flex-col md:flex-row items-center gap-6">
             <p className="text-[0.85rem] text-gray-600 dark:text-gray-400 font-medium">
               &copy; {currentYear} Student Resource Hub. All rights reserved.
