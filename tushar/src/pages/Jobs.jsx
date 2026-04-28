@@ -200,9 +200,20 @@ const Jobs = () => {
                       </div>
                     </div>
                     
-                    <p className="text-slate-600 dark:text-slate-300 text-sm mb-6 leading-relaxed line-clamp-2">
+                    <p className="text-slate-600 dark:text-slate-300 text-sm mb-4 leading-relaxed line-clamp-2">
                       {job.description}
                     </p>
+
+                    {job.dayToDay && (
+                      <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700">
+                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                          <Clock className="w-3 h-3" /> Day-to-Day Responsibilities
+                        </h4>
+                        <div className="text-sm text-slate-600 dark:text-slate-300 whitespace-pre-line leading-relaxed">
+                          {job.dayToDay}
+                        </div>
+                      </div>
+                    )}
                     
                     <div className="flex flex-wrap gap-2 mb-2">
                       {job.skills.map(skill => {
@@ -222,7 +233,10 @@ const Jobs = () => {
 
                   {/* Action */}
                   <div className="flex items-center justify-center md:w-40 border-t md:border-t-0 md:border-l border-slate-100 dark:border-slate-700 pt-6 md:pt-0 md:pl-8">
-                    <button className="w-full px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-black rounded-2xl hover:bg-emerald-500 dark:hover:bg-emerald-500 dark:hover:text-white transition-all shadow-xl hover:shadow-emerald-500/25 active:scale-95">
+                    <button 
+                      onClick={() => window.open(job.applyLink || 'https://pune-tech-hub.com/careers', '_blank')}
+                      className="w-full px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-black rounded-2xl hover:bg-emerald-500 dark:hover:bg-emerald-500 dark:hover:text-white transition-all shadow-xl hover:shadow-emerald-500/25 active:scale-95"
+                    >
                       Apply Now
                     </button>
                   </div>

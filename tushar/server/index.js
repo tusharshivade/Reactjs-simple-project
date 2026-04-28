@@ -22,6 +22,12 @@ const sesClient = new SESClient({
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Environment validation
+const GEMINI_API_KEY = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+if (!GEMINI_API_KEY) {
+  console.warn('\x1b[33m%s\x1b[0m', 'WARNING: VITE_GEMINI_API_KEY is not set. Job refreshing will use fallback data.');
+}
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -124,6 +130,8 @@ const db = new sqlite3.Database(dbFile, (err) => {
       type TEXT,
       skills TEXT,
       description TEXT,
+      dayToDay TEXT,
+      applyLink TEXT,
       postedAt DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
     
@@ -142,6 +150,8 @@ const db = new sqlite3.Database(dbFile, (err) => {
     addColumn('users', 'badges', "TEXT DEFAULT '[]'");
     addColumn('users', 'bio', 'TEXT');
     addColumn('users', 'profilePic', 'TEXT');
+    addColumn('jobs', 'dayToDay', 'TEXT');
+    addColumn('jobs', 'applyLink', 'TEXT');
   }
 });
 
@@ -559,7 +569,14 @@ app.post('/api/auth/reset-password', async (req, res) => {
 
 // ======================== JOB PORTAL ROUTES ========================
 
-const genAI = new GoogleGenerativeAI(process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY);
+let genAI = null;
+try {
+  if (GEMINI_API_KEY) {
+    genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+  }
+} catch (err) {
+  console.error('Failed to initialize Google Generative AI:', err.message);
+}
 
 // 18. Get Jobs
 app.get('/api/jobs', (req, res) => {
@@ -587,8 +604,10 @@ app.get('/api/jobs', (req, res) => {
 
 // 19. Refresh Jobs via Gemini
 app.post('/api/jobs/refresh', async (req, res) => {
-  let newJobs;
   try {
+    if (!genAI) {
+      throw new Error('Gemini AI not initialized (missing API key)');
+    }
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const today = new Date().toLocaleDateString();
     
@@ -602,6 +621,8 @@ app.post('/api/jobs/refresh', async (req, res) => {
     - type (Full-time, Internship, or Contract)
     - skills (list of 4-6 relevant technologies)
     - description (2-3 sentences about the role)
+    - dayToDay (a string containing 3-4 bullet points of daily responsibilities or equipment requirements)
+    - applyLink (a realistic careers page URL like https://company-name.com/careers)
     
     Format the output as a JSON array of objects. Do not include any markdown formatting like \`\`\`json. Just the raw array.`;
 
@@ -622,7 +643,9 @@ app.post('/api/jobs/refresh', async (req, res) => {
         salary: "₹18,00,000 - ₹28,00,000",
         type: "Full-time",
         skills: ["React", "Node.js", "PostgreSQL", "Docker"],
-        description: "Join our core engineering team to build scalable digital solutions for global clients."
+        description: "Join our core engineering team to build scalable digital solutions for global clients.",
+        dayToDay: "• Develop new user-facing features using React.js\n• Build reusable components and front-end libraries\n• Collaborate with back-end developers to integrate APIs",
+        applyLink: "https://www.zensar.com/careers"
       },
       {
         title: "AI Engineer",
@@ -632,7 +655,9 @@ app.post('/api/jobs/refresh', async (req, res) => {
         salary: "₹25,00,000 - ₹40,00,000",
         type: "Full-time",
         skills: ["Python", "PyTorch", "TensorFlow", "CUDA"],
-        description: "Develop and optimize deep learning models for autonomous vehicle systems."
+        description: "Develop and optimize deep learning models for autonomous vehicle systems.",
+        dayToDay: "• Research and implement state-of-the-art computer vision algorithms\n• Optimize deep learning models for real-time performance\n• Analyze large datasets to improve model accuracy",
+        applyLink: "https://www.nvidia.com/en-in/about-nvidia/careers/"
       },
       {
         title: "DevOps Specialist",
@@ -642,34 +667,16 @@ app.post('/api/jobs/refresh', async (req, res) => {
         salary: "₹14,00,000 - ₹24,00,000",
         type: "Full-time",
         skills: ["Kubernetes", "AWS", "Terraform", "Jenkins"],
-        description: "Manage and automate cloud infrastructure for secure payment processing systems."
-      },
-      {
-        title: "Backend Developer (Go)",
-        company: "PhonePe",
-        location: "Baner, Pune",
-        category: "Web Development",
-        salary: "₹20,00,000 - ₹35,00,000",
-        type: "Full-time",
-        skills: ["Go", "Redis", "Kafka", "Microservices"],
-        description: "Build high-throughput backend services for India's leading digital payments platform."
-      },
-      {
-        title: "UI/UX Designer",
-        company: "ThoughtWorks",
-        location: "Yerwada, Pune",
-        category: "UI/UX Design",
-        salary: "₹10,00,000 - ₹18,00,000",
-        type: "Full-time",
-        skills: ["Figma", "Adobe XD", "User Research", "Prototyping"],
-        description: "Create intuitive and impactful user experiences for diverse digital products."
+        description: "Manage and automate cloud infrastructure for secure payment processing systems.",
+        dayToDay: "• Automate deployment pipelines using CI/CD tools\n• Manage and scale Kubernetes clusters on AWS\n• Monitor system performance and troubleshoot infrastructure issues",
+        applyLink: "https://www.mastercard.com/careers"
       }
     ];
   }
 
   try {
-    const stmt = db.prepare(`INSERT INTO jobs (title, company, location, category, salary, type, skills, description) 
-                             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
+    const stmt = db.prepare(`INSERT INTO jobs (title, company, location, category, salary, type, skills, description, dayToDay, applyLink) 
+                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
 
     newJobs.forEach(job => {
       stmt.run(
@@ -680,7 +687,9 @@ app.post('/api/jobs/refresh', async (req, res) => {
         job.salary,
         job.type,
         JSON.stringify(job.skills || []),
-        job.description
+        job.description,
+        job.dayToDay || '',
+        job.applyLink || 'https://pune-tech-hub.com/careers'
       );
     });
 

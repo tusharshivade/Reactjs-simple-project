@@ -10,10 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from the root .env file
+load_dotenv(BASE_DIR.parent / '.env')
+
+GEMINI_KEY = os.getenv("AIzaSyBfoItgXmXNE8G4QVNsHZ7HE9ZwnidU44k")
 
 
 # Quick-start development settings - unsuitable for production
